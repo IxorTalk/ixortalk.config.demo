@@ -1,0 +1,5 @@
+alertmanager:
+  slack_configs:
+    channel: '#demo-ixortalk'
+  group_wait: 30s
+  group_interval: 30s

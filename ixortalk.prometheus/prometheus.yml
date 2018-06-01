@@ -1,0 +1,187 @@
+global:
+  scrape_interval:     15s # By default, scrape targets every 15 seconds.
+  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+  # scrape_timeout is set to the global default (10s).
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+      monitor: 'codelab-monitor'
+
+# Load and evaluate rules in this file every 'evaluation_interval' seconds.
+rule_files:
+  - "alert.rules.yml"
+  - "recording.rules.yml"
+
+# Alertmanager
+alerting:
+  alertmanagers:
+  - path_prefix: /alertmanager
+    static_configs:
+    - targets:
+      - alertmanager:9093
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  - job_name: 'Assets'
+
+    metrics_path: '/prometheus'
+
+    scrape_interval: 5s
+
+    file_sd_configs:
+          - files:
+            - /assets/assets.yml
+            refresh_interval: 1m
+
+  - job_name: 'IxorTalk Spring Boot services'
+
+    metrics_path: '/prometheus'
+
+    scrape_interval: 5s
+
+    relabel_configs:
+      - source_labels: [prometheus_url]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
+
+    static_configs:
+      - targets: ['ixortalk-config-server:8599']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-config-server'
+          prometheus_url: '/actuator/prometheus'
+      - targets: ['ixortalk-assetmgmt:8501']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-assetmgmt'
+          prometheus_url: '/actuator/prometheus_metrics'
+      - targets: ['ixortalk-assetstate:8502']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-assetstate'
+          prometheus_url: '/actuator/prometheus_metrics'
+      - targets: ['ixortalk-mailing-service:8503']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-mailing-service'
+          prometheus_url: '/actuator/prometheus_metrics'
+      - targets: ['ixortalk-authserver:9599']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-authserver'
+          prometheus_url: '/actuator/prometheus_metrics'
+      - targets: ['ixortalk-gateway:8588']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-gateway'
+          prometheus_url: '/actuator/prometheus_metrics'
+
+  - job_name: 'IxorTalk Spring Boot services Health'
+
+    metrics_path: '/probe'
+
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+
+    static_configs:
+      - targets: ['http://ixortalk-config-server:8599/actuator/health']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-config-server health'
+      - targets: ['http://ixortalk-assetmgmt:8501/actuator/health']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-assetmgmt health'
+      - targets: ['http://ixortalk-assetstate:8502/actuator/health']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-assetstate health'
+      - targets: ['http://ixortalk-mailing-service:8503/actuator/health']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-mailing-service health'
+      - targets: ['http://ixortalk-authserver:9599/actuator/health']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-authserver health'
+      - targets: ['http://ixortalk-gateway:8588/actuator/health']
+        labels:
+          type: 'Spring boots'
+          name: 'ixortalk-gateway health'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'Blackbox HTTP'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]  # Look for a HTTP 200 response.
+    static_configs:
+      - targets: ['http://ixortalk-assetmgmt-ui:7001']
+        labels:
+          type: 'UI Dockers'
+          name: 'AssetMgmt UI'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'Blackbox TCP'
+    metrics_path: /probe
+    params:
+      module: [tcp_connect]
+    static_configs:
+      - targets: ['ixortalk-postgres-authserver:5432']
+        labels:
+          type: 'Databases'
+          name: 'Postgres'
+      - targets: ['ixortalk-mongodb-assetmgmt:27017']
+        labels:
+          type: 'Databases'
+          name: 'Mongo'
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
+
+  - job_name: 'Monitoring'
+
+    metrics_path: '/metrics'
+
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['cadvisor:8080']
+        labels:
+          type: 'Monitoring dockers'
+          name: 'cAdvisor'
+      - targets: ['node-exporter:9100']
+        labels:
+          type: 'Monitoring dockers'
+          name: 'node-exporter'
+
+  - job_name: 'Prometheus'
+
+    metrics_path: '/prometheus/metrics'
+
+    scrape_interval: 5s
+
+    static_configs:
+      - targets: ['prometheus:9090']
+        labels:
+          type: 'Monitoring dockers'
+          name: 'Prometheus'
+

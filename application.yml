@@ -1,0 +1,85 @@
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://ixortalk-gateway:8888/uaa/user
+    client:
+      accessTokenUri: http://ixortalk-gateway:8888/uaa/oauth/token
+      userAuthorizationUri: /uaa/oauth/authorize
+      clientId: ixortalk
+      clientSecret: ixortalkSecret
+      grant-type: client_credentials
+
+spring:
+  metrics:
+    servo:
+      enabled: false
+
+management:
+  context-path: /actuator
+  security:
+    enabled: false
+
+endpoints:
+  prometheus:
+    id: prometheus_metrics
+
+logging:
+    level:
+        com.ixortalk: INFO
+        root: INFO
+
+ixortalk:
+  loadbalancer:
+    internal:
+        url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}
+        protocol: http
+        # Should map to the ip on which the platform is reachable from outside
+        host: 10.200.10.1
+        port: 8888
+    external:
+        url: ${ixortalk.loadbalancer.external.protocol}://${ixortalk.loadbalancer.external.host}:${ixortalk.loadbalancer.external.port}
+        protocol: http
+        # Should map to the ip on which the platform is reachable from within the microservices
+        host: 10.200.10.1
+        port: 8888
+
+  server:
+      alertmanager:
+          port: 9093
+          context-path: /alertmanager
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.alertmanager.port}${ixortalk.server.alertmanager.context-path}
+      assetmgmt:
+          port: 8001
+          context-path: /assetmgmt
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.assetmgmt.port}${ixortalk.server.assetmgmt.context-path}
+      assetmgmt-ui:
+          port: 7001
+          context-path: /assetmgmt-ui
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.assetmgmt-ui.port}${ixortalk.server.assetmgmt-ui.context-path}
+      assetstate:
+          port: 8002
+          context-path: /assetstate
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.assetstate.port}${ixortalk.server.assetstate.context-path}
+      mailing-service:
+          port: 8003
+          context-path: /mailing
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.mailing-service.port}${ixortalk.server.mailing-service.context-path}
+      authserver:
+          port: 9999
+          context-path: /uaa
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.authserver.port}${ixortalk.server.authserver.context-path}
+      prometheus:
+          port: 9090
+          context-path: /prometheus
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.prometheus.port}${ixortalk.server.prometheus.context-path}
+      gateway:
+          port: 8888
+          context-path: /
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.gateway.port}${ixortalk.server.gateway.context-path}
+      grafana:
+          port: 3000
+          context-path: /
+          url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.server.grafana.port}${ixortalk.server.grafana.context-path}
+
+nginx:
+    defaultlogging: 1

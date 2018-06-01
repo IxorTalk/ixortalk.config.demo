@@ -1,0 +1,27 @@
+server:
+  port: ${ixortalk.server.assetmgmt.port}
+  context-path: ${ixortalk.server.assetmgmt.context-path}
+
+management:
+  port: 8501
+
+spring:
+  data:
+    mongodb:
+      host: ixortalk-mongodb-assetmgmt
+      database: ixortalk_assetmgmt
+      username: ixortalk_assetmgmt
+      password: ixortalk_assetmgmt
+
+assetmgmt:
+  schemas:
+    asset: ${spring.cloud.config.uri}/ixortalk.assetmgmt/${spring.profiles.active}/master/schemas/asset-schema.json
+
+ixortalk:
+  prometheus:
+    static-configs-path: /assets
+    write-static-configs-interval-milliseconds: 60000
+    scrape:
+      config:
+        host-property-name: hostname
+        port-property-name: port

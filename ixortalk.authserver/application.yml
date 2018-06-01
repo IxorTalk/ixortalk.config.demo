@@ -1,0 +1,110 @@
+spring:
+    devtools:
+        restart:
+            enabled: false
+        livereload:
+            enabled: false
+    jpa:
+        open-in-view: false
+        hibernate:
+            ddl-auto: none
+            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+        database-platform: com.ixortalk.authserver.domain.util.FixedPostgreSQL82Dialect
+        database: POSTGRESQL
+        show_sql: false
+        properties:
+            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_query_cache: false
+            hibernate.generate_statistics: false
+    datasource:
+        url: jdbc:postgresql://ixortalk-postgres-authserver:5432/ixortalk_authserver
+        username: ixortalk_authserver
+        password: ixortalk_authserver
+    messages:
+        basename: ${spring.cloud.config.uri}/ixortalk.authserver/default/master/i18n/messages
+    freemarker:
+        template-loader-path: classpath:/templates/
+    mvc:
+        favicon:
+            enabled: false
+    thymeleaf:
+        mode: XHTML
+
+
+defaultSuccessUrl: /../
+loginPage: /login
+
+security:
+    basic:
+        enabled: false
+
+liquibase:
+    change-log: classpath:config/liquibase/master.xml
+
+server:
+    port: ${ixortalk.server.authserver.port}
+    context-path: ${ixortalk.server.authserver.context-path}
+    useForwardHeaders: true
+    compression:
+        enabled: true
+        mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
+
+management:
+  port: 9599
+
+jhipster:
+    async:
+        corePoolSize: 2
+        maxPoolSize: 50
+        queueCapacity: 10000
+    metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
+        jmx.enabled: true
+        spark:
+            enabled: false
+            host: localhost
+            port: 9999
+        graphite:
+            enabled: false
+            host: localhost
+            port: 2003
+            prefix: authserver
+        logs: # Reports Dropwizard metrics in the logs
+            enabled: false
+            reportFrequency: 60 # in seconds
+    logging:
+        logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+            enabled: false
+            host: localhost
+            port: 5000
+            queueSize: 512
+    swagger:
+        enabled: true
+        title: authserver API
+        description: authserver API documentation
+        version: 0.0.1
+        termsOfServiceUrl:
+        contactName:
+        contactUrl:
+        contactEmail:
+        license:
+        licenseUrl:
+    ribbon:
+        displayOnActiveProfiles: dev,tst,stg,uat
+    http:
+        cache: # Used by the CachingHttpHeadersFilter
+            timeToLiveInDays: 1461
+    security:
+        authentication:
+            oauth-clients:
+              admin:
+                clientid: ixortalkOAuthClient
+                secret: ixortalkOAuthClientSecret
+                # Token is valid 24 hours
+                tokenValidityInSeconds: 86400
+                authorities: ROLE_ADMIN, ROLE_USER
+
+ixortalk:
+  authserver:
+    freemarker:
+      variables:
+        platform: Demo

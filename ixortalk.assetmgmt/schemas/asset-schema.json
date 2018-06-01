@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-06/schema#",
+  "type": "object",
+  "properties": {
+    "_id": {
+      "$ref": "#/definitions/_id"
+    },
+    "assetProperties": {
+      "$ref": "#/definitions/assetProperties"
+    }
+  },
+  "definitions": {
+    "_id": {
+      "type": "object",
+      "properties": {
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "assetProperties": {
+      "type": "object",
+      "properties": {
+        "properties": {
+          "$ref": "#/definitions/properties"
+        }
+      }
+    },
+    "properties": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assetId",
+        "hostname",
+        "port"
+      ],
+      "properties": {
+        "assetId": {
+          "type": "string",
+          "title": "A functional identifier for the asset"
+        },
+        "hostname": {
+          "type": "string",
+          "title": "The asset's hostname"
+        },
+        "port": {
+          "type": "number",
+          "title": "The asset's hostname"
+      }
+    }
+  }
+}

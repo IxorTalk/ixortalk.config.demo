@@ -1,0 +1,120 @@
+server:
+  port: 8888
+  context-path: ${ixortalk.server.gateway.context-path}
+management:
+  port: 8588
+
+spring:
+  aop:
+    proxy-target-class: true
+
+security:
+    oauth2:
+        client:
+            grant-type: authorization_code
+
+zuul:
+  routes:
+    user:
+      path: /user/**
+      url: ${ixortalk.server.authserver.url}/user
+    user-mgmt:
+      sensitiveHeaders:
+      path: /user-mgmt/**
+      url: ${ixortalk.server.authserver.url}/
+    user-mgmt-api:
+      sensitiveHeaders:
+      path: /user-mgmt-api/**
+      url: ${ixortalk.server.authserver.url}/
+    uaa-service:
+      sensitiveHeaders:
+      path: /uaa/**
+      url: ${ixortalk.server.authserver.url}/
+    assetmgmt-service:
+      sensitiveHeaders:
+      path: /assetmgmt/**
+      url: ${ixortalk.server.assetmgmt.url}/
+    assetmgmt-ui:
+      sensitiveHeaders:
+      path: /assetmgmt-ui/**
+      url: ${ixortalk.server.assetmgmt-ui.url}/
+    assetstate-service:
+      sensitiveHeaders:
+      path: /assetstate/**
+      url: ${ixortalk.server.assetstate.url}/
+    prometheus:
+      sensitiveHeaders:
+      path: /prometheus/**
+      url: ${ixortalk.server.prometheus.url}/
+    grafana:
+      sensitiveHeaders:
+      path: /grafana/**
+      url: ${ixortalk.server.grafana.url}/
+    alertmanager:
+      sensitiveHeaders:
+      path: /alertmanager/**
+      url: ${ixortalk.server.alertmanager.url}/
+    platform-instance:
+      path: /assets/instance/**
+      url: http://ixortalk-static-content-nginx:7200/
+
+  add-proxy-headers: false
+
+ixortalk:
+  permit-all-paths: /assets/**
+  gateway:
+    title: Demo IxorTalk platform
+    copyright: (c) Ixor 2016. All rights reserved.
+    logo: /assets/instance/logo.png
+    welcome-text: Welcome @ Demo IxorTalk platform
+    modules:
+       user-mgmt:
+          name: Authentication module
+          url: /user-mgmt/index.html
+          image: /assets/images/users.png
+          description: Manage the users within the IxorTalk platform
+       asset-mgmt:
+          name: AssetMgmt module
+          url: /assetmgmt-ui/index.html
+          image: assets/images/masterdata.png
+          description: Manage the assets within the IxorTalk platform
+       prometheus:
+          name: Prometheus module
+          url: /prometheus/
+          image: assets/images/prometheus.png
+          description: Prometheus monitoring module monitors assets and other services within IxorTalk
+       alertmanager:
+          name: AlartManager module
+          url: /alertmanager/
+          image: assets/images/alertmanager.png
+          description: Alartmanager module to manage alerts being sent
+       grafana:
+          name: Grafana module
+          url: /grafana/
+          image: assets/images/grafana.png
+          description: Grafana module for viewing and configuring dashboards
+  role-matchers:
+    user-mgmt:
+      hasAnyRole: ADMIN
+    user-mgmt-api:
+      permitAll: true
+    uaa-service:
+      permitAll: true
+      hasAnyRole: ADMIN, USER
+      csrf-enabled: false
+    assetmgmt-service:
+      permitAll: true
+      hasAnyRole: ADMIN
+      csrf-enabled: false
+    assetstate-service:
+      permitAll: true
+      csrf-enabled: false
+    assetmgmt-ui:
+      hasAnyRole: ADMIN
+    prometheus:
+      hasAnyRole: ADMIN, USER
+    grafana:
+      hasAnyRole: ADMIN, USER
+    alertmanager:
+      hasAnyRole: ADMIN
+      csrf-enabled: false

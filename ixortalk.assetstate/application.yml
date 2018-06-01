@@ -1,0 +1,21 @@
+server:
+  port: ${ixortalk.server.assetstate.port}
+  context-path: ${ixortalk.server.assetstate.context-path}
+
+management:
+  port: 8502
+
+ixortalk:
+  mapping:
+    identifier: assetId
+  aspects:
+    connectivity:
+      metric-name: up
+  interval-config:
+    range-vector-selector: 20s
+
+assetstate:
+  assetmgmt:
+    url: ${ixortalk.server.assetmgmt.url}
+  prometheus:
+    url: ${ixortalk.server.prometheus.url}

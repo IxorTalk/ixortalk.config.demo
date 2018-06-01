@@ -21,3 +21,8 @@ ixortalk:
     from: no-reply@yourdomain.com
   messages:
     basename: ${spring.cloud.config.uri}/ixortalk.mailing.service/default/master/i18n/messages
+
+logging:
+  level:
+    # Setting log level to DEBUG to have mail content in log file
+    com.ixortalk.mailing.service.send: DEBUG

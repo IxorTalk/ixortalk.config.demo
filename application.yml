@@ -5,8 +5,8 @@ security:
     client:
       accessTokenUri: http://ixortalk-gateway:8888/uaa/oauth/token
       userAuthorizationUri: /uaa/oauth/authorize
-      clientId: ixortalk
-      clientSecret: ixortalkSecret
+      clientId: ixortalkOAuthClient
+      clientSecret: ixortalkOAuthClientSecret
       grant-type: client_credentials
 
 spring:

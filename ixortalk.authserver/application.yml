@@ -16,10 +16,9 @@ spring:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: false
-    datasource:
-        url: jdbc:postgresql://ixortalk-postgres-authserver:5432/ixortalk_authserver
-        username: ixortalk_authserver
-        password: ixortalk_authserver
+    profiles:
+        active: prod
+    # datasource is provided by AWS CloudFormation
     messages:
         basename: ${spring.cloud.config.uri}/ixortalk.authserver/default/master/i18n/messages
     freemarker:
@@ -42,16 +41,12 @@ liquibase:
     change-log: classpath:config/liquibase/master.xml
 
 server:
-    port: ${ixortalk.server.authserver.port}
+    port: 9999
     context-path: ${ixortalk.server.authserver.context-path}
     useForwardHeaders: true
     compression:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
-
-management:
-  port: 9599
-
 jhipster:
     async:
         corePoolSize: 2

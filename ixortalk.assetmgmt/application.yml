@@ -1,17 +1,11 @@
 server:
-  port: ${ixortalk.server.assetmgmt.port}
+  port: 8001
   context-path: ${ixortalk.server.assetmgmt.context-path}
-
-management:
-  port: 8501
 
 spring:
   data:
     mongodb:
-      host: ixortalk-mongodb-assetmgmt
-      database: ixortalk_assetmgmt
-      username: ixortalk_assetmgmt
-      password: ixortalk_assetmgmt
+      uri: mongodb://fix_me
 
 assetmgmt:
   schemas:

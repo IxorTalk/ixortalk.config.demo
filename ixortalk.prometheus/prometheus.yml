@@ -17,9 +17,10 @@ rule_files:
 alerting:
   alertmanagers:
   - path_prefix: /alertmanager
+    scheme: https
     static_configs:
     - targets:
-      - alertmanager:9093
+      - ${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}
 
 # A scrape configuration containing exactly one endpoint to scrape:
 # Here it's Prometheus itself.
@@ -28,11 +29,12 @@ scrape_configs:
 
     metrics_path: '/prometheus'
 
+    scheme: ${ixortalk.loadbalancer.internal.protocol}
+
     scrape_interval: 5s
 
     file_sd_configs:
-          - files:
-            - /assets/assets.yml
+      - files: ['/assets/assets.yml']
             refresh_interval: 1m
 
   - job_name: 'IxorTalk Spring Boot services'
@@ -41,76 +43,68 @@ scrape_configs:
 
     scrape_interval: 5s
 
+    static_configs:
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
+        labels:
+          group: 'Spring boot metrics'
+          name: 'ixortalk-configserver'
+          prometheus_url: '${ixortalk.server.configserver.context-path}/actuator/prometheus'
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
+        labels:
+          group: 'Spring boot metrics'
+          name: 'ixortalk-assetmgmt'
+          prometheus_url: '${ixortalk.server.assetmgmt.context-path}/actuator/prometheus_metrics'
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
+        labels:
+            group: 'Spring boot metrics'
+            name: 'ixortalk-mailing-service'
+            prometheus_url: '${ixortalk.server.mailing-service.context-path}/actuator/prometheus_metrics'
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
+        labels:
+          group: 'Spring boot metrics'
+          name: 'ixortalk-authserver'
+          prometheus_url: '${ixortalk.server.authserver.context-path}/actuator/prometheus_metrics'
+
     relabel_configs:
       - source_labels: [prometheus_url]
         action: replace
         target_label: __metrics_path__
         regex: (.+)
 
-    static_configs:
-      - targets: ['ixortalk-config-server:8599']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-config-server'
-          prometheus_url: '/actuator/prometheus'
-      - targets: ['ixortalk-assetmgmt:8501']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-assetmgmt'
-          prometheus_url: '/actuator/prometheus_metrics'
-      - targets: ['ixortalk-assetstate:8502']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-assetstate'
-          prometheus_url: '/actuator/prometheus_metrics'
-      - targets: ['ixortalk-mailing-service:8503']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-mailing-service'
-          prometheus_url: '/actuator/prometheus_metrics'
-      - targets: ['ixortalk-authserver:9599']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-authserver'
-          prometheus_url: '/actuator/prometheus_metrics'
-      - targets: ['ixortalk-gateway:8588']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-gateway'
-          prometheus_url: '/actuator/prometheus_metrics'
-
   - job_name: 'IxorTalk Spring Boot services Health'
 
-    metrics_path: '/probe'
+    scheme: ${ixortalk.loadbalancer.internal.protocol}
 
     params:
       module: [http_2xx]  # Look for a HTTP 200 response.
 
     static_configs:
-      - targets: ['http://ixortalk-config-server:8599/actuator/health']
+      - targets: ['${ixortalk.server.configserver.url}/actuator/health']
         labels:
-          type: 'Spring boots'
-          name: 'ixortalk-config-server health'
-      - targets: ['http://ixortalk-assetmgmt:8501/actuator/health']
+            group: 'Spring boot health'
+            name: 'ixortalk-config-server health'
+            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+      - targets: ['${ixortalk.server.assetmgmt.url}/actuator/health']
         labels:
-          type: 'Spring boots'
-          name: 'ixortalk-assetmgmt health'
-      - targets: ['http://ixortalk-assetstate:8502/actuator/health']
+            group: 'Spring boot health'
+            name: 'ixortalk-assetmgmt health'
+            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+      - targets: ['${ixortalk.server.authserver.url}/actuator/health']
         labels:
-          type: 'Spring boots'
-          name: 'ixortalk-assetstate health'
-      - targets: ['http://ixortalk-mailing-service:8503/actuator/health']
+            group: 'Spring boot health'
+            name: 'ixortalk-authserver health'
+            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+      - targets: ['${ixortalk.server.gateway.url}actuator/health']
         labels:
-          type: 'Spring boots'
-          name: 'ixortalk-mailing-service health'
-      - targets: ['http://ixortalk-authserver:9599/actuator/health']
+            group: 'Spring boot health'
+            name: 'ixortalk-gateway health'
+            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+      - targets: ['${ixortalk.server.mailing-service.url}/actuator/health']
         labels:
-          type: 'Spring boots'
-          name: 'ixortalk-authserver health'
-      - targets: ['http://ixortalk-gateway:8588/actuator/health']
-        labels:
-          type: 'Spring boots'
-          name: 'ixortalk-gateway health'
+            group: 'Spring boot health'
+            name: 'ixortalk-mailing-service health'
+            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
@@ -136,42 +130,62 @@ scrape_configs:
       - target_label: __address__
         replacement: blackbox-exporter:9115
 
-  - job_name: 'Blackbox TCP'
+  - job_name: 'Blackbox HTTP'
+
+    scheme: ${ixortalk.loadbalancer.internal.protocol}
+
     metrics_path: /probe
+
     params:
-      module: [tcp_connect]
+       module: [http_2xx]  # Look for a HTTP 200 response.
+
     static_configs:
-      - targets: ['ixortalk-postgres-authserver:5432']
+      - targets: ['${ixortalk.server.assetmgmt-ui.context-path}']
         labels:
-          type: 'Databases'
-          name: 'Postgres'
-      - targets: ['ixortalk-mongodb-assetmgmt:27017']
-        labels:
-          type: 'Databases'
-          name: 'Mongo'
+            group: 'UI Dockers'
+            name: 'AssetMgmt UI'
+            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
       - source_labels: [__param_target]
         target_label: instance
       - target_label: __address__
-        replacement: blackbox-exporter:9115
+        replacement: ${ixortalk.loadbalancer.internal.host}:${ixortalk.server.blackbox-exporter.port}
+      - source_labels: [prometheus_url]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
 
-  - job_name: 'Monitoring'
+  - job_name: 'CAdvisor Monitoring'
 
-    metrics_path: '/metrics'
+    metrics_path: '/prometheus-support/cadvisor/metrics'
 
     scrape_interval: 5s
 
+    scheme: ${ixortalk.loadbalancer.internal.protocol}
+
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
         labels:
-          type: 'Monitoring dockers'
+          group: 'Monitoring dockers'
           name: 'cAdvisor'
-      - targets: ['node-exporter:9100']
+
+  - job_name: 'Node Exporter Monitoring'
+
+    metrics_path: '/prometheus-support/node-exporter/metrics'
+
+    scrape_interval: 5s
+
+    scheme: ${ixortalk.loadbalancer.internal.protocol}
+
+    static_configs:
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
         labels:
-          type: 'Monitoring dockers'
+          group: 'Monitoring dockers'
           name: 'node-exporter'
+
 
   - job_name: 'Prometheus'
 
@@ -179,9 +193,10 @@ scrape_configs:
 
     scrape_interval: 5s
 
-    static_configs:
-      - targets: ['prometheus:9090']
-        labels:
-          type: 'Monitoring dockers'
-          name: 'Prometheus'
+    scheme: ${ixortalk.loadbalancer.internal.protocol}
 
+    static_configs:
+      - targets: ['${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}']
+        labels:
+          group: 'Monitoring dockers'
+          name: 'Prometheus'

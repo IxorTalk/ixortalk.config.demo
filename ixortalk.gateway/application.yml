@@ -1,8 +1,7 @@
 server:
   port: 8888
   context-path: ${ixortalk.server.gateway.context-path}
-management:
-  port: 8588
+    useForwardHeaders: true
 
 spring:
   aop:
@@ -42,25 +41,39 @@ zuul:
       sensitiveHeaders:
       path: /assetstate/**
       url: ${ixortalk.server.assetstate.url}/
+    prometheus-support:
+      sensitiveHeaders:
+      path: /prometheus-support/**
+      url: ${ixortalk.server.prometheus-support.url}/
     prometheus:
       sensitiveHeaders:
       path: /prometheus/**
       url: ${ixortalk.server.prometheus.url}/
-    grafana:
+    prometheus-api:
       sensitiveHeaders:
-      path: /grafana/**
-      url: ${ixortalk.server.grafana.url}/
+      path: /prometheus-api/**
+      url: ${ixortalk.server.prometheus-support.url}/prometheus-api/
     alertmanager:
       sensitiveHeaders:
       path: /alertmanager/**
       url: ${ixortalk.server.alertmanager.url}/
+    alertmanager-api:
+      sensitiveHeaders:
+      path: /alertmanager-api/**
+      url: ${ixortalk.server.prometheus-support.url}/alertmanager-api/
+    grafana:
+      sensitiveHeaders:
+      path: /grafana/**
+      url: ${ixortalk.server.grafana.url}/
     platform-instance:
       path: /assets/instance/**
-      url: http://ixortalk-static-content-nginx:7200/
+      url: ${ixortalk.assets.base-url}/
 
   add-proxy-headers: false
 
 ixortalk:
+  assets:
+    base-url: https://assets.demo-ixortalk.com
   permit-all-paths: /assets/**
   gateway:
     title: Demo IxorTalk platform

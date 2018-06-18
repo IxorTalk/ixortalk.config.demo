@@ -1,9 +1,6 @@
 server:
-  port: ${ixortalk.server.assetstate.port}
+  port: 8002
   context-path: ${ixortalk.server.assetstate.context-path}
-
-management:
-  port: 8502
 
 ixortalk:
   mapping:

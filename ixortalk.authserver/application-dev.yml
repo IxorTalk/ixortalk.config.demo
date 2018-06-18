@@ -8,6 +8,10 @@ spring:
         cache-seconds: 1
     thymeleaf:
         cache: false
+    datasource:
+        url: jdbc:postgresql://ixortalk-postgres-authserver:5432/ixortalk_authserver
+        username: ixortalk_authserver
+        password: ixortalk_authserver
 
 jhipster:
     security:

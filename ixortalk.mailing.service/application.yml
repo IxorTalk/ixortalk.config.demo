@@ -1,9 +1,6 @@
 server:
-  port: ${ixortalk.server.mailing-service.port}
+  port: 8003
   context-path: ${ixortalk.server.mailing-service.context-path}
-
-management:
-  port: 8503
 
 spring:
   mail:

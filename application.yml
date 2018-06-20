@@ -89,14 +89,14 @@ ixortalk:
   loadbalancer:
     internal:
         url: ${ixortalk.loadbalancer.internal.protocol}://${ixortalk.loadbalancer.internal.host}:${ixortalk.loadbalancer.internal.port}
-            host: loadbalancer.internal.demo-ixortalk.com
-            protocol: https
-            port: 443
+        host: loadbalancer.internal.demo-ixortalk.com
+        protocol: https
+        port: 443
     external:
         url: ${ixortalk.loadbalancer.external.protocol}://${ixortalk.loadbalancer.external.host}:${ixortalk.loadbalancer.external.port}
-            host: www.demo-ixortalk.com
-            protocol: https
-            port: 443
+        host: www.demo-ixortalk.com
+        protocol: https
+        port: 443
 
 logging:
     level:

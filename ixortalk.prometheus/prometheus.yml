@@ -35,7 +35,7 @@ scrape_configs:
 
     file_sd_configs:
       - files: ['/assets/assets.yml']
-            refresh_interval: 1m
+        refresh_interval: 1m
 
   - job_name: 'IxorTalk Spring Boot services'
 

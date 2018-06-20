@@ -1,7 +1,7 @@
 server:
   port: 8888
   context-path: ${ixortalk.server.gateway.context-path}
-    useForwardHeaders: true
+  useForwardHeaders: true
 
 spring:
   aop:

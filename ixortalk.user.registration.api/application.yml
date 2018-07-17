@@ -1,0 +1,8 @@
+server:
+  port: 8005
+  context-path: ${ixortalk.server.user-registration-api.context-path}
+
+ixortalk:
+  user-registration:
+    default-roles:
+      - ROLE_USER

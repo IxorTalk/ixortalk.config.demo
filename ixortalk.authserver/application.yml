@@ -93,10 +93,16 @@ jhipster:
             oauth-clients:
               admin:
                 clientid: ixortalkOAuthClient
-                secret: ixortalkOAuthClientSecret
+                secret: ${security.oauth2.client.clientSecret}
                 # Token is valid 24 hours
                 tokenValidityInSeconds: 86400
                 authorities: ROLE_ADMIN, ROLE_USER
+              mobile-client:
+                clientid: ixortalk-mobile-client
+                secret: Bfg9NLcDWkfZgHtY
+                # Token is valid for 1 hour
+                tokenValidityInSeconds: 3600
+                authorities:
 
 ixortalk:
   authserver:

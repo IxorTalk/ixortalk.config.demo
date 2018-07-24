@@ -41,6 +41,10 @@ zuul:
       sensitiveHeaders:
       path: /assetstate/**
       url: ${ixortalk.server.assetstate.url}/
+    user-registration-api:
+      sensitiveHeaders:
+      path: /user-registration/**
+      url: ${ixortalk.server.user-registration-api.url}/
     prometheus-support:
       sensitiveHeaders:
       path: /prometheus-support/**
@@ -124,6 +128,9 @@ ixortalk:
       csrf-enabled: false
     assetmgmt-ui:
       hasAnyRole: ADMIN
+    user-registration-api:
+      permitAll: true
+      csrf-enabled: false
     prometheus:
       hasAnyRole: ADMIN, USER
     grafana:

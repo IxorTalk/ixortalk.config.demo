@@ -1,3 +1,4 @@
+# my global config
 global:
   scrape_interval:     15s # By default, scrape targets every 15 seconds.
   evaluation_interval: 15s # By default, scrape targets every 15 seconds.
@@ -30,6 +31,10 @@ scrape_configs:
 
     scrape_interval: 5s
 
+    relabel_configs:
+      - regex: .*Password
+        action: labeldrop
+
     file_sd_configs:
           - files:
             - /assets/assets.yml
@@ -50,32 +55,32 @@ scrape_configs:
     static_configs:
       - targets: ['ixortalk-config-server:8599']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot metrics'
           name: 'ixortalk-config-server'
           prometheus_url: '/actuator/prometheus'
       - targets: ['ixortalk-assetmgmt:8501']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot metrics'
           name: 'ixortalk-assetmgmt'
           prometheus_url: '/actuator/prometheus_metrics'
       - targets: ['ixortalk-assetstate:8502']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot metrics'
           name: 'ixortalk-assetstate'
           prometheus_url: '/actuator/prometheus_metrics'
       - targets: ['ixortalk-mailing-service:8503']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot metrics'
           name: 'ixortalk-mailing-service'
           prometheus_url: '/actuator/prometheus_metrics'
       - targets: ['ixortalk-authserver:9599']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot metrics'
           name: 'ixortalk-authserver'
           prometheus_url: '/actuator/prometheus_metrics'
       - targets: ['ixortalk-gateway:8588']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot metrics'
           name: 'ixortalk-gateway'
           prometheus_url: '/actuator/prometheus_metrics'
 
@@ -89,27 +94,27 @@ scrape_configs:
     static_configs:
       - targets: ['http://ixortalk-config-server:8599/actuator/health']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot health'
           name: 'ixortalk-config-server health'
       - targets: ['http://ixortalk-assetmgmt:8501/actuator/health']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot health'
           name: 'ixortalk-assetmgmt health'
       - targets: ['http://ixortalk-assetstate:8502/actuator/health']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot health'
           name: 'ixortalk-assetstate health'
       - targets: ['http://ixortalk-mailing-service:8503/actuator/health']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot health'
           name: 'ixortalk-mailing-service health'
       - targets: ['http://ixortalk-authserver:9599/actuator/health']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot health'
           name: 'ixortalk-authserver health'
       - targets: ['http://ixortalk-gateway:8588/actuator/health']
         labels:
-          type: 'Spring boots'
+          group: 'Spring boot health'
           name: 'ixortalk-gateway health'
     relabel_configs:
       - source_labels: [__address__]
@@ -126,7 +131,7 @@ scrape_configs:
     static_configs:
       - targets: ['http://ixortalk-assetmgmt-ui:7001']
         labels:
-          type: 'UI Dockers'
+          group: 'UI Dockers'
           name: 'AssetMgmt UI'
     relabel_configs:
       - source_labels: [__address__]
@@ -141,13 +146,13 @@ scrape_configs:
     params:
       module: [tcp_connect]
     static_configs:
-      - targets: ['ixortalk-postgres-authserver:5432']
+      - targets: ['10.10.0.1:5432']
         labels:
-          type: 'Databases'
+          group: 'Databases'
           name: 'Postgres'
-      - targets: ['ixortalk-mongodb-assetmgmt:27017']
+      - targets: ['10.10.0.1:27017']
         labels:
-          type: 'Databases'
+          group: 'Databases'
           name: 'Mongo'
     relabel_configs:
       - source_labels: [__address__]
@@ -166,11 +171,11 @@ scrape_configs:
     static_configs:
       - targets: ['cadvisor:8080']
         labels:
-          type: 'Monitoring dockers'
+          group: 'Monitoring dockers'
           name: 'cAdvisor'
       - targets: ['node-exporter:9100']
         labels:
-          type: 'Monitoring dockers'
+          group: 'Monitoring dockers'
           name: 'node-exporter'
 
   - job_name: 'Prometheus'
@@ -182,6 +187,6 @@ scrape_configs:
     static_configs:
       - targets: ['prometheus:9090']
         labels:
-          type: 'Monitoring dockers'
+          group: 'Monitoring dockers'
           name: 'Prometheus'
 

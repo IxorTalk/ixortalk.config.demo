@@ -2,3 +2,5 @@ detail-dash.json
 overview-dash.json
 springboot-metrics.json
 jvm-memory-metrics.json
+assets-detail.json
+assets-overview.json

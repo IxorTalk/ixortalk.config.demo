@@ -73,7 +73,7 @@ ixortalk:
           url: /user-mgmt/index.html
           image: /assets/images/users.png
           description: Manage the users within the IxorTalk platform
-       asset-mgmt:
+       assetmgmt-service:
           name: AssetMgmt module
           url: /assetmgmt-ui/index.html
           image: assets/images/masterdata.png

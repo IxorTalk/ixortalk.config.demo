@@ -21,7 +21,7 @@ spring:
         username: ixortalk_authserver
         password: ixortalk_authserver
     messages:
-        basename: ${spring.cloud.config.uri}/ixortalk.authserver/default/master/i18n/messages
+        basename: ${spring.cloud.config.uri}/ixortalk.authserver/${spring.profiles.active}/${spring.cloud.config.label}/i18n/messages
     freemarker:
         template-loader-path: classpath:/templates/
     mvc:

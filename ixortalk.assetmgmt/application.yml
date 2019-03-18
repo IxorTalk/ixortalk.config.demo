@@ -15,7 +15,7 @@ spring:
 
 assetmgmt:
   schemas:
-    asset: ${spring.cloud.config.uri}/ixortalk.assetmgmt/${spring.profiles.active}/master/schemas/asset-schema.json
+    asset: ${spring.cloud.config.uri}/ixortalk.assetmgmt/${spring.profiles.active}/${spring.cloud.config.label}/schemas/asset-schema.json
 
 ixortalk:
   prometheus:

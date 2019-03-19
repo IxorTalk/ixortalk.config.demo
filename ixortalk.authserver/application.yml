@@ -20,8 +20,6 @@ spring:
         url: jdbc:postgresql://ixortalk-postgres-authserver:5432/ixortalk_authserver
         username: ixortalk_authserver
         password: ixortalk_authserver
-    messages:
-        basename: ${spring.cloud.config.uri}/ixortalk.authserver/${spring.profiles.active}/${spring.cloud.config.label}/i18n/messages
     freemarker:
         template-loader-path: classpath:/templates/
     mvc:

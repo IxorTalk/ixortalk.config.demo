@@ -1,0 +1,3 @@
+assetmgmt:
+  schemas:
+    asset: ${spring.cloud.config.uri}/ixortalk.assetmgmt/dev/${spring.cloud.config.label}/schemas/asset-schema.json

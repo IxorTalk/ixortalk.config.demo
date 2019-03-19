@@ -13,14 +13,11 @@ spring:
     password: password
   thymeleaf:
     mode: HTML5
-    prefix: ${spring.cloud.config.uri}/ixortalk.mailing.service/${spring.profiles.active}/${spring.cloud.config.label}/templates/
     check-template: false
 
 ixortalk:
   mail:
     from: no-reply@yourdomain.com
-  messages:
-    basename: ${spring.cloud.config.uri}/ixortalk.mailing.service/${spring.profiles.active}/${spring.cloud.config.label}/i18n/messages
 
 logging:
   level:

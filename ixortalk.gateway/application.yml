@@ -75,6 +75,11 @@ zuul:
 
   add-proxy-headers: false
 
+proxy:
+  auth:
+    routes:
+      platform-instance: none
+
 ixortalk:
   static-content-url: https://s3.eu-central-1.amazonaws.com/${ixortalk.static-content-bucket}
   static-content-bucket: demo-prd-static-content

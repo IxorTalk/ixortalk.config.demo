@@ -137,10 +137,11 @@ scrape_configs:
        module: [http_2xx]  # Look for a HTTP 200 response.
 
     static_configs:
-      - targets: ['${ixortalk.server.assetmgmt-ui.context-path}/health']
+      - targets: ['${ixortalk.server.assetmgmt-ui.url}/health']
         labels:
-          type: 'UI Dockers'
+          group: 'UI Dockers'
           name: 'AssetMgmt UI'
+          prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
       - targets: ['${ixortalk.server.user-registration-ui.url}/health']
         labels:
           group: 'UI Dockers'
@@ -148,16 +149,16 @@ scrape_configs:
           prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
 
     relabel_configs:
-    - source_labels: [__address__]
-      target_label: __param_target
-    - source_labels: [__param_target]
-      target_label: instance
-    - target_label: __address__
-      replacement: ${ixortalk.loadbalancer.internal.host}:${ixortalk.server.blackbox-exporter.port}
-    - source_labels: [prometheus_url]
-      action: replace
-      target_label: __metrics_path__
-      regex: (.+)
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: ${ixortalk.loadbalancer.internal.host}:${ixortalk.server.blackbox-exporter.port}
+      - source_labels: [prometheus_url]
+        action: replace
+        target_label: __metrics_path__
+        regex: (.+)
 
   - job_name: 'CAdvisor Monitoring'
 

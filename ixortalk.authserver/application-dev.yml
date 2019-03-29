@@ -6,6 +6,7 @@ spring:
             enabled: false # we use gulp + BrowserSync for livereload
     messages:
         cache-seconds: 1
+        basename: ${spring.cloud.config.uri}/ixortalk.authserver/dev/${spring.cloud.config.label}/i18n/messages
     thymeleaf:
         cache: false
 

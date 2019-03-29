@@ -1,0 +1,7 @@
+{
+  "Name":"Prometheus",
+  "Type":"prometheus",
+  "Url":"${ixortalk.server.prometheus.url}",
+  "Access":"proxy",
+  "BasicAuth":false
+}

@@ -13,10 +13,6 @@ spring:
       username: ixortalk_assetmgmt
       password: ixortalk_assetmgmt
 
-assetmgmt:
-  schemas:
-    asset: ${spring.cloud.config.uri}/ixortalk.assetmgmt/${spring.profiles.active}/master/schemas/asset-schema.json
-
 ixortalk:
   prometheus:
     static-configs-path: /assets

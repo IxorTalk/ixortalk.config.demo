@@ -1,0 +1,6 @@
+# TODO wj TALK-341: move to application.yml in the end
+zuul:
+  routes:
+    platform-instance:
+      path: /assets/instance/**
+      url: ${ixortalk.static-content-url}/

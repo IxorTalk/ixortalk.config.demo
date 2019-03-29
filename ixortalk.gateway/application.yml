@@ -56,11 +56,18 @@ zuul:
       url: ${ixortalk.server.alertmanager.url}/
     platform-instance:
       path: /assets/instance/**
-      url: http://ixortalk-static-content-nginx:7200/
+      url: ${ixortalk.static-content-url}/
 
   add-proxy-headers: false
 
+proxy:
+  auth:
+    routes:
+      platform-instance: none
+
 ixortalk:
+  static-content-url: https://s3.eu-central-1.amazonaws.com/${ixortalk.static-content-bucket}
+  static-content-bucket: demo-dev-static-content
   permit-all-paths: /assets/**
   gateway:
     title: Demo IxorTalk platform

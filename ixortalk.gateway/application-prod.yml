@@ -1,0 +1,9 @@
+ixortalk:
+  static-content-bucket: demo-prd-static-content
+
+# TODO wj TALK-341: remove this in the end
+zuul:
+  routes:
+    platform-instance:
+      path: /assets/instance/**
+      url: http://ixortalk-static-content-nginx:7200/

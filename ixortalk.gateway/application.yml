@@ -71,13 +71,13 @@ zuul:
       url: ${ixortalk.server.grafana.url}/
     platform-instance:
       path: /assets/instance/**
-      url: ${ixortalk.assets.base-url}/
+      url: ${ixortalk.static-content-url}/
 
   add-proxy-headers: false
 
 ixortalk:
-  assets:
-    base-url: https://assets.demo-ixortalk.com
+  static-content-url: https://s3.eu-central-1.amazonaws.com/${ixortalk.static-content-bucket}
+  static-content-bucket: demo-prd-static-content
   permit-all-paths: /assets/**
   gateway:
     title: Demo IxorTalk platform

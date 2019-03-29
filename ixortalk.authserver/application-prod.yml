@@ -1,0 +1,3 @@
+spring:
+    messages:
+        basename: ${spring.cloud.config.uri}/ixortalk.authserver/dev/${spring.cloud.config.label}/i18n/messages

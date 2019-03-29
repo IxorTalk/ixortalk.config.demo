@@ -19,8 +19,6 @@ spring:
     profiles:
         active: prod
     # datasource is provided by AWS CloudFormation
-    messages:
-        basename: ${spring.cloud.config.uri}/ixortalk.authserver/default/master/i18n/messages
     freemarker:
         template-loader-path: classpath:/templates/
     mvc:
@@ -93,7 +91,7 @@ jhipster:
             oauth-clients:
               admin:
                 clientid: ixortalkOAuthClient
-                secret: ${security.oauth2.client.clientSecret}
+                secret: ixortalkOAuthClientSecret
                 # Token is valid 24 hours
                 tokenValidityInSeconds: 86400
                 authorities: ROLE_ADMIN, ROLE_USER

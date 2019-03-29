@@ -7,10 +7,6 @@ spring:
     mongodb:
       uri: mongodb://ixortalk-assetmgmt-demo-prod:2WyMQsYfFqZcZssa@demo-ixortalk-shard-00-00-skuum.mongodb.net:27017,demo-ixortalk-shard-00-01-skuum.mongodb.net:27017,demo-ixortalk-shard-00-02-skuum.mongodb.net:27017/ixortalk-assetmgmt-demo-prod?ssl=true&replicaSet=demo-ixortalk-shard-0&authSource=admin
 
-assetmgmt:
-  schemas:
-    asset: ${spring.cloud.config.uri}/ixortalk.assetmgmt/${spring.profiles.active}/master/schemas/asset-schema.json
-
 ixortalk:
   prometheus:
     static-configs-path: /assets

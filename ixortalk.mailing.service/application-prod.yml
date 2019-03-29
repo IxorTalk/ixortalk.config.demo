@@ -1,0 +1,7 @@
+spring:
+  thymeleaf:
+    prefix: ${spring.cloud.config.uri}/ixortalk.mailing.service/prod/${spring.cloud.config.label}/templates/
+
+ixortalk:
+  messages:
+    basename: ${spring.cloud.config.uri}/ixortalk.mailing.service/prod/${spring.cloud.config.label}/i18n/messages

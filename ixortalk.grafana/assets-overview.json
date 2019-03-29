@@ -1,0 +1,223 @@
+{
+  "dashboard": {
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": "-- Grafana --",
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "gnetId": null,
+    "graphTooltip": 0,
+    "hideControls": false,
+    "id": null,
+    "links": [],
+    "refresh": "5s",
+    "rows": [
+      {
+        "collapse": false,
+        "height": 250,
+        "panels": [
+          {
+            "clusterName": "",
+            "colorMode": "Panel",
+            "colors": {
+              "crit": "rgba(245, 54, 54, 0.9)",
+              "disable": "rgba(128, 128, 128, 0.9)",
+              "ok": "rgba(50, 128, 45, 0.9)",
+              "warn": "rgba(237, 129, 40, 0.9)"
+            },
+            "cornerRadius": 0,
+            "datasource": "Prometheus",
+            "displayName": "",
+            "flipCard": false,
+            "flipTime": 5,
+            "fontFormat": "Regular",
+            "id": 3,
+            "isAutoScrollOnOverflow": false,
+            "isGrayOnNoData": true,
+            "isHideAlertsOnDisable": true,
+            "isIgnoreOKColors": false,
+            "links": [
+              {
+                "dashUri": "db/asset-detail",
+                "dashboard": "Detail",
+                "params": "refresh=5s&orgId=1&var-hostname=[[assetname]]",
+                "title": "Detail",
+                "type": "dashboard"
+              }
+            ],
+            "minSpan": 1,
+            "repeat": "assetname",
+            "scopedVars": {
+              "assetname": {
+                "selected": false,
+                "text": "prometheus-faker1",
+                "value": "prometheus-faker1"
+              }
+            },
+            "span": 6,
+            "targets": [
+              {
+                "aggregation": "Last",
+                "alias": "Uptime",
+                "crit": 0,
+                "decimals": 2,
+                "displayAliasType": "Always",
+                "displayType": "Regular",
+                "displayValueWithAlias": "When Alias Displayed",
+                "expr": "up{hostname=\"[[assetname]]\"}",
+                "format": "time_series",
+                "intervalFactor": 2,
+                "legendFormat": "Uptime",
+                "refId": "A",
+                "units": "none",
+                "valueHandler": "Number Threshold"
+              }
+            ],
+            "title": "[[assetname]]",
+            "type": "vonage-status-panel"
+          },
+          {
+            "clusterName": "",
+            "colorMode": "Panel",
+            "colors": {
+              "crit": "rgba(245, 54, 54, 0.9)",
+              "disable": "rgba(128, 128, 128, 0.9)",
+              "ok": "rgba(50, 128, 45, 0.9)",
+              "warn": "rgba(237, 129, 40, 0.9)"
+            },
+            "cornerRadius": 0,
+            "datasource": "Prometheus",
+            "displayName": "",
+            "flipCard": false,
+            "flipTime": 5,
+            "fontFormat": "Regular",
+            "id": 4,
+            "isAutoScrollOnOverflow": false,
+            "isGrayOnNoData": true,
+            "isHideAlertsOnDisable": true,
+            "isIgnoreOKColors": false,
+            "links": [
+              {
+                "dashUri": "db/asset-detail",
+                "dashboard": "Detail",
+                "params": "refresh=5s&orgId=1&var-hostname=[[assetname]]",
+                "title": "Detail",
+                "type": "dashboard"
+              }
+            ],
+            "minSpan": 1,
+            "repeat": null,
+            "repeatIteration": 1552576178938,
+            "repeatPanelId": 3,
+            "scopedVars": {
+              "assetname": {
+                "selected": false,
+                "text": "prometheus-faker2",
+                "value": "prometheus-faker2"
+              }
+            },
+            "span": 6,
+            "targets": [
+              {
+                "aggregation": "Last",
+                "alias": "Uptime",
+                "crit": 0,
+                "decimals": 2,
+                "displayAliasType": "Always",
+                "displayType": "Regular",
+                "displayValueWithAlias": "When Alias Displayed",
+                "expr": "up{hostname=\"[[assetname]]\"}",
+                "format": "time_series",
+                "intervalFactor": 2,
+                "legendFormat": "Uptime",
+                "refId": "A",
+                "units": "none",
+                "valueHandler": "Number Threshold"
+              }
+            ],
+            "title": "[[assetname]]",
+            "type": "vonage-status-panel"
+          }
+        ],
+        "repeat": null,
+        "repeatIteration": null,
+        "repeatRowId": null,
+        "showTitle": false,
+        "title": "Dashboard Row",
+        "titleSize": "h6"
+      }
+    ],
+    "schemaVersion": 14,
+    "style": "dark",
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "allValue": null,
+          "current": {
+            "text": "All",
+            "value": "$__all"
+          },
+          "datasource": "Prometheus",
+          "hide": 0,
+          "includeAll": true,
+          "label": null,
+          "multi": true,
+          "name": "assetname",
+          "options": [],
+          "query": "label_values(up{job=\"Assets\"},hostname)",
+          "refresh": 1,
+          "regex": "",
+          "sort": 3,
+          "tagValuesQuery": "",
+          "tags": [],
+          "tagsQuery": "",
+          "type": "query",
+          "useTags": false
+        }
+      ]
+    },
+    "time": {
+      "from": "now-5m",
+      "to": "now"
+    },
+    "timepicker": {
+      "refresh_intervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "time_options": [
+        "5m",
+        "15m",
+        "1h",
+        "6h",
+        "12h",
+        "24h",
+        "2d",
+        "7d",
+        "30d"
+      ]
+    },
+    "timezone": "",
+    "title": "Asset Overview",
+    "version": 5
+  },
+  "overwrite":true
+}

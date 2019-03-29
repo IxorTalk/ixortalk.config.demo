@@ -1,0 +1,1 @@
+${security.oauth2.client.clientId}:${security.oauth2.client.clientSecret}

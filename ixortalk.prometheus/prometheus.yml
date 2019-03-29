@@ -1,3 +1,4 @@
+# my global config
 global:
   scrape_interval:     15s # By default, scrape targets every 15 seconds.
   evaluation_interval: 15s # By default, scrape targets every 15 seconds.
@@ -32,6 +33,10 @@ scrape_configs:
     scheme: ${ixortalk.loadbalancer.internal.protocol}
 
     scrape_interval: 5s
+
+    relabel_configs:
+      - regex: .*Password
+        action: labeldrop
 
     file_sd_configs:
       - files: ['/assets/assets.yml']
@@ -78,31 +83,37 @@ scrape_configs:
       module: [http_2xx]  # Look for a HTTP 200 response.
 
     static_configs:
-      - targets: ['${ixortalk.server.configserver.url}/actuator/health']
-        labels:
-            group: 'Spring boot health'
-            name: 'ixortalk-config-server health'
-            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
-      - targets: ['${ixortalk.server.assetmgmt.url}/actuator/health']
-        labels:
-            group: 'Spring boot health'
-            name: 'ixortalk-assetmgmt health'
-            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
-      - targets: ['${ixortalk.server.authserver.url}/actuator/health']
-        labels:
-            group: 'Spring boot health'
-            name: 'ixortalk-authserver health'
-            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
-      - targets: ['${ixortalk.server.gateway.url}actuator/health']
-        labels:
-            group: 'Spring boot health'
-            name: 'ixortalk-gateway health'
-            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
-      - targets: ['${ixortalk.server.mailing-service.url}/actuator/health']
-        labels:
-            group: 'Spring boot health'
-            name: 'ixortalk-mailing-service health'
-            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+    - targets: ['${ixortalk.server.configserver.url}/actuator/health']
+      labels:
+        group: 'Spring boot health'
+        name: 'ixortalk-config-server health'
+        prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+    - targets: ['${ixortalk.server.assetmgmt.url}/actuator/health']
+      labels:
+        group: 'Spring boot health'
+        name: 'ixortalk-assetmgmt health'
+        prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+    - targets: ['${ixortalk.server.authserver.url}/actuator/health']
+      labels:
+        group: 'Spring boot health'
+        name: 'ixortalk-authserver health'
+        prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+    ##    TODO: gateway is linked to external loadbalancer (can only be one) and hence we cannot make it available
+    #      - targets: ['${ixortalk.server.gateway.url}actuator/health']
+    #        labels:
+    #            group: 'Spring boot health'
+    #            name: 'ixortalk-gateway health'
+    #            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+    - targets: ['${ixortalk.server.control-api.url}/actuator/health']
+      labels:
+        group: 'Spring boot health'
+        name: 'ixortalk-udini-control-api health'
+        prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+    - targets: ['${ixortalk.server.mailing-service.url}/actuator/health']
+      labels:
+        group: 'Spring boot health'
+        name: 'ixortalk-mailing-service health'
+        prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
 
     relabel_configs:
       - source_labels: ['__address__']
@@ -126,23 +137,27 @@ scrape_configs:
        module: [http_2xx]  # Look for a HTTP 200 response.
 
     static_configs:
-      - targets: ['${ixortalk.server.assetmgmt-ui.context-path}']
+      - targets: ['${ixortalk.server.assetmgmt-ui.context-path}/health']
         labels:
-            group: 'UI Dockers'
-            name: 'AssetMgmt UI'
-            prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
+          type: 'UI Dockers'
+          name: 'AssetMgmt UI'
+      - targets: ['${ixortalk.server.user-registration-ui.url}/health']
+        labels:
+          group: 'UI Dockers'
+          name: 'User Registration UI'
+          prometheus_url: '${ixortalk.server.prometheus-support.context-path}${ixortalk.server.blackbox-exporter.context-path}/probe'
 
     relabel_configs:
-      - source_labels: [__address__]
-        target_label: __param_target
-      - source_labels: [__param_target]
-        target_label: instance
-      - target_label: __address__
-        replacement: ${ixortalk.loadbalancer.internal.host}:${ixortalk.server.blackbox-exporter.port}
-      - source_labels: [prometheus_url]
-        action: replace
-        target_label: __metrics_path__
-        regex: (.+)
+    - source_labels: [__address__]
+      target_label: __param_target
+    - source_labels: [__param_target]
+      target_label: instance
+    - target_label: __address__
+      replacement: ${ixortalk.loadbalancer.internal.host}:${ixortalk.server.blackbox-exporter.port}
+    - source_labels: [prometheus_url]
+      action: replace
+      target_label: __metrics_path__
+      regex: (.+)
 
   - job_name: 'CAdvisor Monitoring'
 
